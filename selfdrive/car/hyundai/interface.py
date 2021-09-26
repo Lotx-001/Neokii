@@ -25,11 +25,11 @@ class CarInterface(CarInterfaceBase):
 
     v_current_kph = current_speed * CV.MS_TO_KPH
 
-    gas_max_bp = [0., 10., 20., 50., 70., 130.]
-    gas_max_v = [1.8, 1.15, 0.87, 0.63, 0.45, 0.33]
+    gas_max_bp = [0., 5.*CV.KPH_TO_MS, 10.*CV.KPH_TO_MS, 30.*CV.KPH_TO_MS, 36.*CV.KPH_TO_MS, 37.*CV.KPH_TO_MS, 48.*CV.KPH_TO_MS, 55.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 100.*CV.KPH_TO_MS]
+    gas_max_v = [0.1, 0.4443, 0.6062, 0.5594, 0.4284, 0.3744, 0.1805, 0.13, 0.12, 0.1]
 
-    brake_max_bp = [0, 70., 130.]
-    brake_max_v = [-4., -3., -2.1]
+    brake_max_bp = [0., 10.*CV.KPH_TO_MS, 29.*CV.KPH_TO_MS, 30.*CV.KPH_TO_MS, 50*CV.KPH_TO_MS, 65*CV.KPH_TO_MS]
+    brake_max_v = [0.28, 0.5533, 0.85201, 0.86601, 0.85601, 0.8380]
 
     return interp(v_current_kph, brake_max_bp, brake_max_v), interp(v_current_kph, gas_max_bp, gas_max_v)
 
@@ -54,14 +54,14 @@ class CarInterface(CarInterfaceBase):
       if fw.ecu == "eps" and b"," in fw.fwVersion:
         eps_modified = True
 
-    ret.maxSteeringAngleDeg = 90.
+    ret.maxSteeringAngleDeg = 360.
 
     # lateral
     ret.lateralTuning.init('lqr')
 
     ret.lateralTuning.lqr.scale = 1700.
     ret.lateralTuning.lqr.ki = 0.01
-    ret.lateralTuning.lqr.dcGain = 0.0028
+    ret.lateralTuning.lqr.dcGain = 0.00275
 
     ret.lateralTuning.lqr.a = [0., 1., -0.22619643, 1.21822268]
     ret.lateralTuning.lqr.b = [-1.92006585e-04, 3.95603032e-05]
@@ -70,20 +70,20 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.lqr.l = [0.33, 0.318]
 
     ret.steerRatio = 16.5
-    ret.steerActuatorDelay = 0.1
-    ret.steerLimitTimer = 2.5
-    ret.steerRateCost = 0.4
+    ret.steerActuatorDelay = 0.10
+    ret.steerLimitTimer = 2.6
+    ret.steerRateCost = 0.40
     ret.steerMaxBP = [0.]
-    ret.steerMaxV = [1.5]
+    ret.steerMaxV = [1.0]
 
     # longitudinal
-    ret.longitudinalTuning.kpBP = [0., 10.*CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 40.*CV.KPH_TO_MS, 70.*CV.KPH_TO_MS, 100.*CV.KPH_TO_MS, 130.*CV.KPH_TO_MS]
-    ret.longitudinalTuning.kpV = [1.3, 0.98, 0.83, 0.75, 0.655, 0.57, 0.48]
-    ret.longitudinalTuning.kiBP = [0., 130. * CV.KPH_TO_MS]
-    ret.longitudinalTuning.kiV = [0.05, 0.03]
+    ret.longitudinalTuning.kpBP = [0., 10. * CV.KPH_TO_MS, 20.*CV.KPH_TO_MS, 20. * CV.KPH_TO_MS, 40. * CV.KPH_TO_MS, 100. * CV.KPH_TO_MS]
+    ret.longitudinalTuning.kpV = [0.97, 0.82, 0.63, 0.58, 0.43]
+    ret.longitudinalTuning.kiBP = [0.]
+    ret.longitudinalTuning.kiV = [0.015]
     ret.longitudinalTuning.deadzoneBP = [0., 100.*CV.KPH_TO_MS]
     ret.longitudinalTuning.deadzoneV = [0., 0.015]
-    ret.longitudinalActuatorDelay = 0.2
+    ret.longitudinalActuatorDelay = 0.1
 
     ret.startAccel = -0.8
     ret.stopAccel = -2.0
@@ -237,7 +237,7 @@ class CarInterface(CarInterfaceBase):
       ret.centerToFront = ret.wheelbase * 0.4
     elif candidate in [CAR.K7, CAR.K7_HEV]:
       tire_stiffness_factor = 0.7
-      ret.mass = 1650. + STD_CARGO_KG
+      ret.mass = 1595. + STD_CARGO_KG
       ret.wheelbase = 2.855
       ret.centerToFront = ret.wheelbase * 0.4
     elif candidate == CAR.SELTOS:
