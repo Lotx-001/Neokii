@@ -779,6 +779,15 @@ FW_VERSIONS = {
       b'\xf1\x00DEhe SCC FHCUP      1.00 1.00 99110-G5600         ',
     ],
   },
+  CAR.K7: {
+    (Ecu.eps, 0x7d4, None): [
+      b'\xf1\000YG  MDPS C 1.00 1.00 99800-F6563\000 4YGAC100',
+      b'\xf1\000YG  MDPS C 1.01 99500-F6563\000 4YGDC103',
+    ],
+    (Ecu.fwdCamera, 0x7c4, None): [b'\xf1\000IG MFC  1.00 1.00 95740-F9200 180915',],
+    (Ecu.fwdRadar, 0x7d0, None): [ b'\xf1\x00YG__ SCC F_CUP   1.01 1.02 96400-F6000     \xf1\xa01.01',],
+    (Ecu.esp, 0x7d1, None): [b'\xf1\x8758920-F6230\xf1\000NC MGH \t 101\031\t\005 58920-F6230\xf1\xa01.01',],
+  },
 }
 
 CHECKSUM = {
